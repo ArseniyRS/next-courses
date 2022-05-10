@@ -6,7 +6,7 @@ interface ButtonProps
   extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   color?: 'primary' | 'ghost'
   icon?: string
-  iconRotation?: 'mirrorX' | 'mirrorY'
+  iconRotation?: 'mirrorX' | 'mirrorY' | 'none'
 }
 
 function Button({
@@ -14,7 +14,7 @@ function Button({
   className,
   children,
   icon,
-  iconRotation,
+  iconRotation = 'none',
   ...buttonProps
 }: PropsWithChildren<ButtonProps>) {
   return (
@@ -24,7 +24,7 @@ function Button({
       {...buttonProps}
     >
       {children}
-      {icon && <Image className={iconRotation && styles[iconRotation]} src={icon} alt="" />}
+      {icon && <Image className={styles[iconRotation]} src={icon} alt="" />}
     </button>
   )
 }
