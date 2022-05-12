@@ -1,17 +1,20 @@
 @import '../../styles/variables';
-.p{
-  color: $black;
-}
-.small, .medium{
-  font-size: 14px;
-  line-height: 24px;
+
+.p {
+	color: $black;
 }
 
-.medium{
-  font-size: 16px;
+.small,
+.medium {
+	font-size: 14px;
+	line-height: 24px;
 }
 
-.large{
-  font-size: 18px;
-  line-height: 29px;
+.medium {
+	font-size: 16px;
+}
+
+.large {
+	font-size: 18px;
+	line-height: 29px;
 }

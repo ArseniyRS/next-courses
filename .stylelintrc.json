@@ -11,9 +11,7 @@
 	],
 	"rules": {
 		"prettier/prettier": [true, {"singleQuote": true, "tabWidth": 2, "useTabs": true}],
-		"indentation": [
-			"tab"
-		],
+		"indentation": ["tab", 2],
 		"color-hex-case": "lower"
 	}
 }

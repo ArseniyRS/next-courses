@@ -1,10 +1,13 @@
 @import '../../styles/variables';
-.active{
-  fill: $primary;
+
+.active {
+	fill: $primary;
 }
-.hover{
-  fill: $primary_hover;
+
+.hover {
+	fill: $primary_hover;
 }
-.editable{
-  cursor: pointer;
+
+.editable {
+	cursor: pointer;
 }
