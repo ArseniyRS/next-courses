@@ -3,6 +3,8 @@ import Footer from './Footer/Footer'
 import Header from './Header/Header'
 import Sidebar from './Sidebar/Sidebar'
 import styles from './Layout.module.scss'
+import AppContextProvider, { IAppContext } from '../context/app.context'
+import { ETopLevelCategory } from '../interfaces/page.interface'
 
 function Layout({ children }: PropsWithChildren<{}>) {
   return (
@@ -19,12 +21,16 @@ function Layout({ children }: PropsWithChildren<{}>) {
 
 export default Layout
 
-export function withLayout<T extends Record<string, unknown>>(Component: React.FC<T>) {
+export function withLayout<T extends Record<string, unknown> & IAppContext>(
+  Component: React.FC<T>,
+) {
   return function WrappedComponent(props: T) {
     return (
-      <Layout>
-        <Component {...props} />
-      </Layout>
+      <AppContextProvider menu={props.menu} firstCategory={props.firstCategory}>
+        <Layout>
+          <Component {...props} />
+        </Layout>
+      </AppContextProvider>
     )
   }
 }
