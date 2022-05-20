@@ -1,10 +1,11 @@
 import { createContext, PropsWithChildren, useMemo, useState } from 'react'
-import { MenuItem } from '../interfaces/menu.interface'
+import { IMenuItem } from '../interfaces/menu.interface'
 import { ETopLevelCategory } from '../interfaces/page.interface'
 
 export interface IAppContext {
-  menu: MenuItem[]
+  menu: IMenuItem[]
   firstCategory: ETopLevelCategory
+  setMenu?: (newMenu: IMenuItem[]) => void
 }
 export const AppContext = createContext<IAppContext>({
   menu: [],
@@ -15,10 +16,15 @@ export default function AppContextProvider({
   firstCategory,
   children,
 }: PropsWithChildren<IAppContext>) {
-  const [menuState, setMenuState] = useState<MenuItem[]>(menu)
-  function setMenu(newMenu: MenuItem[]) {
+  const [menuState, setMenuState] = useState<IMenuItem[]>(menu)
+
+  const setMenu = (newMenu: IMenuItem[]) => {
     setMenuState(newMenu)
   }
-  const memoValues = useMemo(() => ({ menu: menuState, firstCategory, setMenu }), [])
-  return <AppContext.Provider value={memoValues}>{children}</AppContext.Provider>
+
+  return (
+    <AppContext.Provider value={{ menu: menuState, firstCategory, setMenu }}>
+      {children}
+    </AppContext.Provider>
+  )
 }

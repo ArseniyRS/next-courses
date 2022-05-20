@@ -1,71 +1,73 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { AppContext } from '../../context/app.context'
-import { ETopLevelCategory, ITopPageModel } from '../../interfaces/page.interface'
 import styles from './Menu.module.scss'
-import CoursesIcon from './icons/courses.svg'
-import ServicesIcon from './icons/services.svg'
-import BooksIcon from './icons/books.svg'
-import ProductsIcon from './icons/products.svg'
 import { PageItem } from '../../interfaces/menu.interface'
-
-interface FirstLevelMenu {
-  route: string
-  name: string
-  icon: React.ReactElement
-  id: ETopLevelCategory
-}
-
-const firstLevelMenu: FirstLevelMenu[] = [
-  { route: 'courses', name: 'Курсы', icon: <CoursesIcon />, id: ETopLevelCategory.Courses },
-  { route: 'services', name: 'Услуги', icon: <ServicesIcon />, id: ETopLevelCategory.Services },
-  { route: 'books', name: 'Книги', icon: <BooksIcon />, id: ETopLevelCategory.Books },
-  { route: 'books', name: 'Продукты', icon: <ProductsIcon />, id: ETopLevelCategory.Products },
-]
+import { firstLevelMenu } from '../../helpers/helpers'
 
 export default function Menu() {
-  const { menu, firstCategory } = useContext(AppContext)
-  const [secondMenuActive, setSecondMenuActive] = useState(null)
+  const { menu, setMenu, firstCategory } = useContext(AppContext)
 
+  const [secondMenuActive, setSecondMenuActive] = useState<string | null>(null)
+  const router = useRouter()
+  const handleClickSecondMenu = (id: string) => () => setSecondMenuActive(id)
+  useEffect(() => {
+    if (menu) {
+      menu.forEach((item) => {
+        if (item.pages.map((page) => page.alias).includes(router.asPath.split('/')[2])) {
+          // eslint-disable-next-line no-underscore-dangle
+          setSecondMenuActive(item._id.secondCategory)
+        }
+      })
+    }
+  }, [menu])
   const thirdLevelMenuElements = (relativeRoute: string, pages: PageItem[]) => (
-    <ul>
+    <ul className={styles.menu__third}>
       {pages.map((page) => (
         // eslint-disable-next-line no-underscore-dangle
         <li key={page._id}>
-          <a href={`${relativeRoute}/${page.alias}`}>
-            <span>{page.title}</span>
-          </a>
+          <Link href={`${relativeRoute}/${page.alias}`}>
+            <a>
+              <span>{page.title}</span>
+            </a>
+          </Link>
         </li>
       ))}
     </ul>
   )
   const secondLevelMenuElements = (relativeRoute: string) => (
-    <ul>
+    <ul className={styles.menu__second}>
       {menu.map((item) => (
-        // eslint-disable-next-line no-underscore-dangle
-        <li key={item._id.secondCategory} className={styles.active}>
+        <li
+          aria-hidden="true"
+          // eslint-disable-next-line no-underscore-dangle
+          key={item._id.secondCategory}
+          className={styles.active}
+          onClick={handleClickSecondMenu(item._id.secondCategory)}
+        >
           {item._id.secondCategory}
-          {secondMenuActive === item._id.secondCategory &&
-            thirdLevelMenuElements(relativeRoute, item.pages)}
+          {secondMenuActive === item._id.secondCategory
+            && thirdLevelMenuElements(relativeRoute, item.pages)}
         </li>
       ))}
     </ul>
   )
   const firstLevelMenuElements = firstLevelMenu.map((item) => (
-    <li
-      key={item.id}
-      // className={active ? styles.active : ''}
-    >
-      <a href={`/${item.route}`}>
-        {item.icon}
-        <span>{item.name}</span>
-      </a>
+    <li key={item.id}>
+      <Link href={`/${item.route}`}>
+        <a className={item.id === firstCategory ? styles.menu__active : ''}>
+          {item.icon}
+          <span>{item.name}</span>
+        </a>
+      </Link>
       {item.id === firstCategory && secondLevelMenuElements(item.route)}
     </li>
   ))
 
   return (
-    <div>
-      <ul>{firstLevelMenuElements}</ul>
+    <div className={styles.menu}>
+      <ul className={styles.menu__first}>{firstLevelMenuElements}</ul>
     </div>
   )
 }

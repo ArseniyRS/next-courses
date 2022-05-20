@@ -5,7 +5,7 @@ export interface PageItem {
   category: string
 }
 
-export interface MenuItem {
+export interface IMenuItem {
   _id: {
     secondCategory: string
   }

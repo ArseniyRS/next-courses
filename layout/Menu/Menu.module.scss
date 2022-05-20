@@ -1,0 +1,66 @@
+@import '../../styles/variables';
+.menu{
+
+  li, a, span{
+    color: #787D85;
+  }
+  
+  &__first{
+    display: flex;
+    flex-direction: column;
+    li{
+      margin: 10px 0;
+    }
+    a{
+      display: flex;
+      align-items: center;
+      column-gap: 20px;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 25px;
+      &:hover{
+        color: $primary_hover!important;
+      }
+      span{
+        color: inherit!important;
+      }
+    }
+  }
+  &__second{
+    border-left: 1px solid #DFDFDF;
+    margin-left: 12px;
+    li{
+      font-weight: 300;
+      font-size: 12px;
+      line-height: 16px;
+      text-transform: uppercase;
+      margin: 7px 0 7px 32px;
+      cursor: pointer;
+      &:hover{
+        color: $primary_hover!important;
+      }
+    } 
+   
+  }
+  &__third{
+    li{
+      margin: 5px 0;
+     
+    }
+    a{
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 19px;
+      text-transform: none;
+      &:hover{
+        color: $primary_hover;
+      }
+    }
+  }
+  &__active{
+    color: $primary!important;
+    svg{
+      fill: $primary;
+    }
+  }
+}

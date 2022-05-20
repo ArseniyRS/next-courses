@@ -1,16 +1,17 @@
 import axios from 'axios'
+import { GetStaticProps } from 'next/types'
 import Button from '../components/Button/Button'
 import Htag from '../components/Htag/Htag'
 import Raiting from '../components/Raiting/Raiting'
 import Tag from '../components/Tag/Tag'
-import { MenuItem } from '../interfaces/menu.interface'
+import { IMenuItem } from '../interfaces/menu.interface'
 import { withLayout } from '../layout/Layout'
 
-interface HomeProps extends Record<string, unknown> {
-  menu: MenuItem[]
+interface IHomeProps extends Record<string, unknown> {
+  menu: IMenuItem[]
   firstCategory: number
 }
-function Home({ menu, firstCategory }: HomeProps) {
+function Home({ menu, firstCategory }: IHomeProps) {
   return (
     <>
       <Htag tag="h1">Test</Htag>
@@ -20,17 +21,13 @@ function Home({ menu, firstCategory }: HomeProps) {
       <Tag color="green">smthing</Tag>
       <Tag>smthing</Tag>
       <Raiting />
-      {menu.map((item) => (
-        // eslint-disable-next-line no-underscore-dangle
-        <span key={item._id.secondCategory}>{item._id.secondCategory}</span>
-      ))}
     </>
   )
 }
 export default withLayout(Home)
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<IHomeProps> = async () => {
   const firstCategory = 0
-  const { data: menu } = await axios.post<MenuItem[]>(
+  const { data: menu } = await axios.post<IMenuItem[]>(
     `${process.env.NEXT_PUBLIC_DOMAIN}top-page/find`,
     { firstCategory },
   )
